@@ -5,13 +5,12 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 /* GET users listing. */
-router.post("/login", function (req, res, next) {
+router.post("/login", function  (req, res, next) {
   const { body } = req;
   try {
     const data = fs.readFileSync("./utils/users.json", "utf8");
     const parseData = JSON.parse(data)
     const user = parseData.find((item) => item.username == body.username)
-    console.log(`INDEX: ${JSON.stringify(user)}`);
     if (!user) {
       console.log("Usuario no encontrado");
       return res.sendStatus(404)
@@ -22,7 +21,10 @@ router.post("/login", function (req, res, next) {
       return res.sendStatus(400)
     }
     console.log("usuario autenticado");
-    return res.sendStatus(200);
+    const image = fs.readFileSync(`./uploads/${user.username}/${user.image}`);
+    let base64Image = Buffer.from(image, 'binary').toString('base64');
+    res.setHeader("Content-Type", "application/json");
+    return res.json({image_reference: base64Image});
   } catch (error) {
     console.log(error.message);
     return res.sendStatus(500)
@@ -30,7 +32,7 @@ router.post("/login", function (req, res, next) {
 });
 
 router.post("/", function (req, res, next) {
-  const { body } = req;
+  const { body, filename } = req;
   const salt = bcrypt.genSaltSync(saltRounds);
   const password = bcrypt.hashSync(body.password, salt);
   try {
@@ -39,7 +41,7 @@ router.post("/", function (req, res, next) {
     const user = {
       username: body.username,
       password,
-      image: body.image
+      image: filename
     }
     let usersList = []
     if (parseData.length == 0) {
