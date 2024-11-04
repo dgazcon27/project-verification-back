@@ -4,8 +4,8 @@
   "private": true,
   "main":"index.js",
   "scripts": {
-    "dev": "nodemon ./api/index.js",
-    "start": "node ./api/index.js"
+    "dev": "nodemon ./bin/index.js",
+    "start": "node ./bin/index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
