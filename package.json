@@ -2,9 +2,9 @@
   "name": "project-verification-back",
   "version": "0.0.0",
   "private": true,
-  "main":"./bin/www",
+  "main":"./bin/index.js",
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ."
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
